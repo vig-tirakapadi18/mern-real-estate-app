@@ -17,3 +17,5 @@ mongoose.connect(process.env.CONN_STR)
 app.listen(process.env.PORT, () => {
         console.log("Server started!")
 });
+
+module.exports = app;
