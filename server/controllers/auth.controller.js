@@ -16,6 +16,6 @@ exports.signup = async (req, res, next) => {
                         message: "User created successfully!"
                 })
         } catch (error) {
-                next(errorHandler(550, "Error"));
+                next(error);
         }
 }
