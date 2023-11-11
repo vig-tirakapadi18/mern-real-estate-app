@@ -26,4 +26,15 @@ app.listen(process.env.PORT, () => {
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 
+app.use((error, req, res, next) => {
+        const statusCode = error.statusCode || 500;
+        const message = error.message || "Internal server error!";
+
+        res.status(statusCode).json({
+                success: false,
+                statusCode,
+                message
+        })
+})
+
 module.exports = app;
