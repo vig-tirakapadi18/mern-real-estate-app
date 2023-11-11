@@ -1,13 +1,20 @@
 import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import loader from "../assets/pulse.svg";
+import {
+    signInFailure,
+    signInStart,
+    signInSuccess,
+} from "../store/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const SignIn = () => {
     const [formData, setFormData] = useState({});
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
+
+    const { error, loading } = useSelector((state) => state.user);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const changeHandler = (event) => {
         setFormData({ ...formData, [event.target.id]: event.target.value });
@@ -16,7 +23,7 @@ const SignIn = () => {
     const submitHandler = async (event) => {
         event.preventDefault();
         try {
-            setLoading(true);
+            dispatch(signInStart());
             const response = await fetch("/api/auth/signin", {
                 method: "POST",
                 headers: {
@@ -28,17 +35,14 @@ const SignIn = () => {
             const data = await response.json();
 
             if (data.success === false) {
-                setError(data.message);
-                setLoading(false);
+                dispatch(signInFailure(data.message));
                 return;
             }
 
-            setLoading(true);
-            setError(null);
+            dispatch(signInSuccess(data));
             navigate("/");
         } catch (error) {
-            setLoading(false);
-            setError(error.message);
+            dispatch(signInFailure(error.message));
         }
     };
 
