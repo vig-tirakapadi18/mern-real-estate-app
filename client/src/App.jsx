@@ -3,8 +3,8 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
-import SignOut from "./pages/SignOut";
 import Header from "./components/Header";
+import SignUp from "./pages/SignUp";
 
 const App = () => {
     return (
@@ -28,8 +28,8 @@ const App = () => {
                     element={<SignIn />}
                 />
                 <Route
-                    path="/sign-out"
-                    element={<SignOut />}
+                    path="/sign-up"
+                    element={<SignUp />}
                 />
             </Routes>
         </BrowserRouter>
