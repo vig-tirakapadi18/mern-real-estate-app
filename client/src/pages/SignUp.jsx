@@ -36,8 +36,6 @@ const SignUp = () => {
             setLoading(true);
             setError(null);
             navigate("/sign-in");
-
-            console.log(data);
         } catch (error) {
             setLoading(false);
             setError(error.message);
@@ -46,7 +44,7 @@ const SignUp = () => {
 
     return (
         <Fragment>
-            <h1 className="text-center text-3xl font-semibold my-7">Sign In</h1>
+            <h1 className="text-center text-3xl font-semibold my-7">Sign Up</h1>
             <form
                 onSubmit={submitHandler}
                 className="flex justify-center flex-col max-w-lg align-middle mx-auto gap-4">
@@ -82,14 +80,14 @@ const SignUp = () => {
                             />
                         </div>
                     ) : (
-                        "Sign In"
+                        "Sign Up"
                     )}
                 </button>
 
                 <div className="flex gap-2 my-2 text-center text-lg">
                     <p className="text-stone-900">Have an account?</p>
                     <Link to={"/sign-up"}>
-                        <span className="text-blue-700">Sign Up</span>
+                        <span className="text-blue-700">Sign In</span>
                     </Link>
                 </div>
                 {error ? <p className="text-rose-800 text-lg">{error}</p> : ""}
