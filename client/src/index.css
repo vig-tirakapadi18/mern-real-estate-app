@@ -1,6 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Mooli&family=Nunito:wght@200;300;400;500;600;700;800;900;1000&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+}
 
 body {
     background-color: rgb(226 232 240);

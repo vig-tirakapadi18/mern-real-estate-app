@@ -41,7 +41,7 @@ const Header = () => {
                             <img
                                 src={currentUser.photo}
                                 alt={currentUser.username}
-                                className="w-10 h-10 object-cover rounded-full"
+                                className="w-7 h-7 object-cover rounded-full"
                             />
                         ) : (
                             <li className="text-stone-700 hover:underline hover:cursor-pointer">
