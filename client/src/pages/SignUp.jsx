@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import loader from "../assets/pulse.svg";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({});
@@ -83,6 +84,8 @@ const SignUp = () => {
                         "Sign Up"
                     )}
                 </button>
+
+                <OAuth />
 
                 <div className="flex gap-2 my-2 text-center text-lg">
                     <p className="text-stone-900">Have an account?</p>

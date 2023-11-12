@@ -25,6 +25,7 @@ app.listen(process.env.PORT, () => {
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+// app.use("/api/google");
 
 app.use((error, req, res, next) => {
         const statusCode = error.statusCode || 500;

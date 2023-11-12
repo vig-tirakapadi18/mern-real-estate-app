@@ -7,6 +7,7 @@ import {
     signInSuccess,
 } from "../store/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import OAuth from "../components/OAuth";
 
 const SignIn = () => {
     const [formData, setFormData] = useState({});
@@ -69,7 +70,7 @@ const SignIn = () => {
                 />
                 <button
                     disabled={loading}
-                    className="bg-stone-700 uppercase text-white p-3 rounded-lg text-lg hover:opacity-95 disabled:p-0.5 disabled:cursor-not-allowed disabled:opacity-90">
+                    className="bg-stone-700 uppercase text-white p-3 rounded-lg text-lg hover:opacity-95 disabled:p-0.5 disabled:cursor-not-allowed disabled:opacity-90 ">
                     {loading ? (
                         <div>
                             <img
@@ -81,6 +82,8 @@ const SignIn = () => {
                         "Sign In"
                     )}
                 </button>
+
+                <OAuth />
 
                 <div className="flex gap-2 my-2 text-center text-lg">
                     <p className="text-stone-900">
