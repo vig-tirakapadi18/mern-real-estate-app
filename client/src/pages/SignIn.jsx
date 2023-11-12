@@ -12,6 +12,7 @@ const SignIn = () => {
     const [formData, setFormData] = useState({});
 
     const { error, loading } = useSelector((state) => state.user);
+    console.log(error, loading);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -89,7 +90,11 @@ const SignIn = () => {
                         <span className="text-blue-700">Sign Up</span>
                     </Link>
                 </div>
-                {error ? <p className="text-rose-800 text-lg">{error}</p> : ""}
+                {error ? (
+                    <p className="text-rose-800 text-lg">{error.message}</p>
+                ) : (
+                    ""
+                )}
             </form>
         </Fragment>
     );
