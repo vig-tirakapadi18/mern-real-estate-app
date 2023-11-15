@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 
 const userRouter = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
+const listingRouter = require("./routes/listing.route");
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.listen(process.env.PORT, () => {
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
 // app.use("/api/google");
 
 app.use((error, req, res, next) => {
