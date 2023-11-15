@@ -11,7 +11,7 @@ exports.testRoute = (req, res) => {
 }
 
 exports.updateUser = async (req, res, next) => {
-        if (req.user.id !== req.params.id) return next(errorHandler(403, "You can only update your own account!"));
+        if (req.user.id !== req.params.id) return next(errorHandler(401, "You are unauthorized to update this account!"));
 
         try {
                 if (req.body.password) {
@@ -29,6 +29,18 @@ exports.updateUser = async (req, res, next) => {
 
                 const { password, ...userInfo } = updatedUser._doc;
                 res.status(200).json(userInfo);
+        } catch (error) {
+                next(error);
+        }
+}
+
+exports.deleteUser = async (req, res, next) => {
+        if (req.body.id !== req.params.id) return next(errorHandler(401, "You are not authorized to delete this account!"));
+
+        try {
+                await User.findByIdAndDelete(req.params.id);
+                res.clearCookie("access_token");
+                res.status(200).json({ message: "User deleted successfully!" });
         } catch (error) {
                 next(error);
         }
