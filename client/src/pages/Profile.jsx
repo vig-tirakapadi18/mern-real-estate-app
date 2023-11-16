@@ -7,6 +7,7 @@ import {
     ref,
     uploadBytesResumable,
 } from "firebase/storage";
+import { Link } from "react-router-dom";
 import { app } from "../firebase";
 import {
     deleteUserFailure,
@@ -234,6 +235,11 @@ const Profile = () => {
                     className="bg-emerald-700 text-white uppercase p-3 rounded-lg my-2 hover:opacity-95 text-lg">
                     Create Listing
                 </button> */}
+                <Link
+                    to={"/create-listing"}
+                    className="text-center my-2 p-3 bg-emerald-700 text-white uppercase text-lg rounded-lg hover:opacity-95">
+                    Create Listing
+                </Link>
 
                 <div className="flex justify-between text-red-700 text-lg">
                     <p
