@@ -20,7 +20,7 @@ import {
     updateUserStart,
     updateUserSuccess,
 } from "../store/user/userSlice";
-import loader from "../assets/pulse.svg";
+import PulseLoading from "../components/UI/PulseLoading";
 
 const Profile = () => {
     const [uploadImg, setImgUpload] = useState(undefined);
@@ -219,16 +219,7 @@ const Profile = () => {
                 <button
                     disabled={loading}
                     className="bg-stone-700 text-white uppercase p-3 rounded-lg my-2 hover:opacity-95 text-lg disabled:opacity-80">
-                    {loading ? (
-                        <div>
-                            <img
-                                src={loader}
-                                className="mx-auto w-[50px]"
-                            />
-                        </div>
-                    ) : (
-                        "Update"
-                    )}
+                    {loading ? <PulseLoading /> : "Update"}
                 </button>
                 {/* <button
                     type="button"
