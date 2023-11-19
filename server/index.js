@@ -9,12 +9,6 @@ const listingRouter = require("./routes/listing.route");
 
 dotenv.config();
 
-const app = express();
-
-app.use(express.json());
-
-app.use(cookieParser());
-
 mongoose.connect(process.env.CONN_STR)
         .then(() => {
                 console.log("Connected to MongoDB!");
@@ -23,6 +17,12 @@ mongoose.connect(process.env.CONN_STR)
                 console.log(err.message);
         })
 
+const app = express();
+
+app.use(express.json());
+
+app.use(cookieParser());
+
 app.listen(process.env.PORT, () => {
         console.log("Server started!")
 });
@@ -30,13 +30,12 @@ app.listen(process.env.PORT, () => {
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/listing", listingRouter);
-// app.use("/api/google");
 
 app.use((error, req, res, next) => {
         const statusCode = error.statusCode || 500;
         const message = error.message || "Internal server error!";
 
-        res.status(statusCode).json({
+        return res.status(statusCode).json({
                 success: false,
                 statusCode,
                 message

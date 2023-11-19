@@ -111,7 +111,7 @@ const Profile = () => {
             );
 
             const data = await response.json();
-            if (data.message === false) {
+            if (data.success === false) {
                 dispatch(deleteUserFailure(data.message));
                 return;
             }
@@ -151,9 +151,36 @@ const Profile = () => {
                 return;
             }
 
+            console.log(data);
             setUserListings(data);
         } catch (error) {
             setShowListingError(true);
+        }
+    };
+
+    const deleteListingHandler = async (listingId) => {
+        try {
+            console.log(currentUser._id);
+            const response = await fetch(
+                `/api/listing/delete/${listingId}`,
+                {
+                    method: "DELETE",
+                }
+            );
+            console.log(response);
+
+            const data = await response.json();
+            console.log(data);
+            if (data.success === false) {
+                console.log(data.message);
+                return;
+            }
+
+            setUserListings((prev) =>
+                prev.filter((listing) => listing._id !== listingId)
+            );
+        } catch (error) {
+            console.log(error.message);
         }
     };
 
@@ -241,11 +268,7 @@ const Profile = () => {
                     className="bg-stone-700 text-white uppercase p-3 rounded-lg my-2 hover:opacity-95 text-lg disabled:opacity-80">
                     {loading ? <PulseLoading /> : "Update"}
                 </button>
-                {/* <button
-                    type="button"
-                    className="bg-emerald-700 text-white uppercase p-3 rounded-lg my-2 hover:opacity-95 text-lg">
-                    Create Listing
-                </button> */}
+
                 <Link
                     to={"/create-listing"}
                     className="text-center my-2 p-3 bg-emerald-700 text-white uppercase text-lg rounded-lg hover:opacity-95">
@@ -301,10 +324,17 @@ const Profile = () => {
                                     <p>{listing.name}</p>
                                 </Link>
                                 <div className="flex flex-col gap-1">
-                                    <button className="uppercase bg-rose-700 pl-2 pr-2 pt-1 pb-1 text-sm text-white rounded-md">
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            deleteListingHandler(listing._id)
+                                        }
+                                        className="uppercase bg-rose-700 pl-2 pr-2 pt-1 pb-1 text-sm text-white rounded-md">
                                         Delete
                                     </button>
-                                    <button className="uppercase bg-emerald-700 pl-2 pr-2 pt-1 pb-1 text-sm text-white rounded-md">
+                                    <button
+                                        type="button"
+                                        className="uppercase bg-emerald-700 pl-2 pr-2 pt-1 pb-1 text-sm text-white rounded-md">
                                         Edit
                                     </button>
                                 </div>
