@@ -1,9 +1,9 @@
 import { FaBath, FaBed } from "react-icons/fa6";
 import { MdDiscount } from "react-icons/md";
 import { BiSolidDiscount } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     getDownloadURL,
     getStorage,
@@ -13,7 +13,7 @@ import {
 import { app } from "../firebase";
 import PulseLoading from "./UI/PulseLoading";
 
-const CreateListing = () => {
+const UpdateListing = () => {
     const [files, setFiles] = useState([]);
     const [formData, setFormData] = useState({
         imageUrls: [],
@@ -36,6 +36,24 @@ const CreateListing = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const navigate = useNavigate();
+    const params = useParams();
+
+    useEffect(() => {
+        const fetchListing = async () => {
+            const listingId = params.listingId;
+            const response = await fetch(
+                `/api/listing/getListing/${listingId}`
+            );
+
+            const data = await response.json();
+            if (data.success === false) {
+                console.log(data.message);
+                return;
+            }
+            setFormData(data);
+        };
+        fetchListing();
+    }, []);
 
     const storeImages = async (file) => {
         return new Promise((resolve, reject) => {
@@ -142,17 +160,21 @@ const CreateListing = () => {
             setLoading(true);
             setError(false);
 
-            const response = await fetch("api/listing/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    ...formData,
-                    userRef: currentUser._id,
-                }),
-            });
+            const response = await fetch(
+                `/api/listing/update/${params.listingId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        ...formData,
+                        userRef: currentUser._id,
+                    }),
+                }
+            );
             const data = await response.json();
+            console.log(data);
             if (data.success === false) {
                 setError(data.message);
             }
@@ -167,7 +189,7 @@ const CreateListing = () => {
     return (
         <main className="p-3 max-w-4xl mx-auto text-stone-800">
             <h1 className="text-center  font-semibold text-3xl uppercase my-7">
-                Create A Listing
+                Update A Listing
             </h1>
             <form
                 onSubmit={formSubmitHandler}
@@ -393,7 +415,7 @@ const CreateListing = () => {
                     <button
                         disabled={loading || uploading}
                         className="p-3 bg-stone-700 uppercase text-white my-5 rounded-lg text-lg hover:opacity-95 disabled:opacity-80">
-                        {loading ? <PulseLoading /> : "Create Listing"}
+                        {loading ? <PulseLoading /> : "Update Listing"}
                     </button>
                     {error && <p className="text-red-700 text-sm">{error}</p>}
                 </div>
@@ -402,4 +424,4 @@ const CreateListing = () => {
     );
 };
 
-export default CreateListing;
+export default UpdateListing;

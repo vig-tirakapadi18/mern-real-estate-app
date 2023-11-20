@@ -161,12 +161,9 @@ const Profile = () => {
     const deleteListingHandler = async (listingId) => {
         try {
             console.log(currentUser._id);
-            const response = await fetch(
-                `/api/listing/delete/${listingId}`,
-                {
-                    method: "DELETE",
-                }
-            );
+            const response = await fetch(`/api/listing/delete/${listingId}`, {
+                method: "DELETE",
+            });
             console.log(response);
 
             const data = await response.json();
@@ -183,6 +180,8 @@ const Profile = () => {
             console.log(error.message);
         }
     };
+
+    // const updateListingHandler = (listingId) => {};
 
     return (
         <Fragment>
@@ -323,6 +322,7 @@ const Profile = () => {
                                     to={`/listing/${listing._id}`}>
                                     <p>{listing.name}</p>
                                 </Link>
+
                                 <div className="flex flex-col gap-1">
                                     <button
                                         type="button"
@@ -332,11 +332,15 @@ const Profile = () => {
                                         className="uppercase bg-rose-700 pl-2 pr-2 pt-1 pb-1 text-sm text-white rounded-md">
                                         Delete
                                     </button>
-                                    <button
-                                        type="button"
-                                        className="uppercase bg-emerald-700 pl-2 pr-2 pt-1 pb-1 text-sm text-white rounded-md">
-                                        Edit
-                                    </button>
+                                    <Link
+                                        to={`/update-listing/${listing._id}`}
+                                        className="text-center">
+                                        <button
+                                            type="button"
+                                            className="uppercase bg-emerald-700 pl-2 pr-2 pt-1 pb-1 text-sm text-white rounded-md">
+                                            Edit
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
                         ))}
