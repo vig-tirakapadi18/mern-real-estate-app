@@ -74,17 +74,14 @@ const Profile = () => {
         try {
             dispatch(updateUserStart());
             console.log(currentUser);
-            const response = await fetch(
-                `/api/user/update/${currentUser._id}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formData),
-                }
-            );
-            const data = await response.json();
+            const res = await fetch(`/api/user/update/${currentUser._id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
             console.log(data);
 
             if (data.success === false) {
@@ -103,14 +100,11 @@ const Profile = () => {
         try {
             dispatch(deleteUserStart());
 
-            const response = await fetch(
-                `/api/user/delete/${currentUser._id}`,
-                {
-                    method: "DELETE",
-                }
-            );
+            const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+                method: "DELETE",
+            });
 
-            const data = await response.json();
+            const data = await res.json();
             if (data.success === false) {
                 dispatch(deleteUserFailure(data.message));
                 return;
@@ -125,8 +119,8 @@ const Profile = () => {
     const signoutUserHandler = async () => {
         try {
             dispatch(signoutUserStart());
-            const response = await fetch("/api/auth/signout");
-            const data = await response.json();
+            const res = await fetch("/api/auth/signout");
+            const data = await res.json();
 
             if (data.success === false) {
                 dispatch(signoutUserFailure(data.message));
@@ -142,10 +136,8 @@ const Profile = () => {
     const showListingHandler = async () => {
         try {
             setShowListingError(false);
-            const response = await fetch(
-                `/api/user/listings/${currentUser._id}`
-            );
-            const data = await response.json();
+            const res = await fetch(`/api/user/listings/${currentUser._id}`);
+            const data = await res.json();
             if (data.success === false) {
                 setShowListingError(true);
                 return;
@@ -161,12 +153,11 @@ const Profile = () => {
     const deleteListingHandler = async (listingId) => {
         try {
             console.log(currentUser._id);
-            const response = await fetch(`/api/listing/delete/${listingId}`, {
+            const res = await fetch(`/api/listing/delete/${listingId}`, {
                 method: "DELETE",
             });
-            console.log(response);
 
-            const data = await response.json();
+            const data = await res.json();
             console.log(data);
             if (data.success === false) {
                 console.log(data.message);
@@ -185,7 +176,7 @@ const Profile = () => {
 
     return (
         <Fragment>
-            <h1 className="text-center my-5 font-semibold text-4xl uppercase text-stone-700">
+            <h1 className="text-center mt-5 font-semibold text-4xl uppercase text-stone-700">
                 Update / Create Listing
             </h1>
             <form
@@ -287,14 +278,14 @@ const Profile = () => {
                     </p>
                 </div>
 
-                <p className="text-red-700 mt-5">{error ? error : ""}</p>
-                <p className="text-green-700 mt-5">
+                <p className="text-red-700 mt-2">{error ? error : ""}</p>
+                <p className="text-green-700 mt-2">
                     {updateSuccess ? "User updated successfully!" : ""}
                 </p>
                 <button
                     type="button"
                     onClick={showListingHandler}
-                    className="text-center text-lg text-emerald-700">
+                    className="text-center text-lg text-emerald-700 font-semibold">
                     Show listings
                 </button>
 
