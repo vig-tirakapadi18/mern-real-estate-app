@@ -15,16 +15,19 @@ import { MdChair } from "react-icons/md";
 import { BiSolidDiscount } from "react-icons/bi";
 
 import PulseLoading from "../components/UI/PulseLoading";
+import { useSelector } from "react-redux";
+import Contact from "../components/Contact";
 
 const Listing = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [listing, setListing] = useState(null);
     const [copied, setCopied] = useState(false);
-
-    console.log(listing);
+    const [contact, setContact] = useState(false);
 
     const params = useParams();
+
+    const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
         const fetchListing = async () => {
@@ -113,14 +116,14 @@ const Listing = () => {
                             {listing.address}
                         </p>
                         <div className="flex gap-5">
-                            <p className="bg-red-700  w-[200px] text-center uppercase text-white p-1 rounded-full">
+                            <div className="bg-red-700  w-[200px] text-center uppercase text-white p-1 rounded-full">
                                 <div className="flex justify-center items-center gap-1">
                                     <FaHome />
                                     {listing.type === "rent"
                                         ? "For Rent"
                                         : "For Sale"}
                                 </div>
-                            </p>
+                            </div>
                             {listing.offer && (
                                 <p className="bg-emerald-700 w-[200px] text-center p-1 rounded-full text-white flex justify-center items-center gap-1">
                                     <BiSolidDiscount size={18} />
@@ -139,19 +142,19 @@ const Listing = () => {
                         </p>
 
                         <ul className="font-semibold whitespace-nowrap flex gap-2 items-center flex-wrap">
-                            <li className="flex items-center gap-2 bg-stone-600 pt-1 pb-1 pl-4 pr-4 text-white rounded-md">
+                            <li className="flex items-center gap-2 bg-green-700 pt-1 pb-1 pl-4 pr-4 text-white rounded-md">
                                 <FaBed size={20} />
                                 {listing.bedrooms > 1
                                     ? `${listing.bedrooms} Beds`
                                     : `${listing.bedrooms} Bed`}
                             </li>
-                            <li className="flex gap-2 items-center  bg-stone-600 pt-1 pb-1 pl-4 pr-4 text-white rounded-md">
+                            <li className="flex gap-2 items-center  bg-green-700 pt-1 pb-1 pl-4 pr-4 text-white rounded-md">
                                 <FaBath size={20} />
                                 {listing.bathrooms > 1
                                     ? `${listing.bedrooms} Baths`
                                     : `${listing.bedrooms} Bath`}
                             </li>
-                            <li className="flex gap-2 items-center  bg-stone-600 pt-1 pb-1 pl-4 pr-4 text-white rounded-md">
+                            <li className="flex gap-2 items-center  bg-green-700 pt-1 pb-1 pl-4 pr-4 text-white rounded-md">
                                 <div className="flex gap-2 items-center">
                                     <FaSquareParking size={20} />
                                     {listing.parking
@@ -159,7 +162,7 @@ const Listing = () => {
                                         : "No Parking"}
                                 </div>
                             </li>
-                            <li className="flex gap-2 items-center  bg-stone-600 pt-1 pb-1 pl-4 pr-4 text-white rounded-md">
+                            <li className="flex gap-2 items-center  bg-green-700 pt-1 pb-1 pl-4 pr-4 text-white rounded-md">
                                 <div className="flex items-center gap-2">
                                     <MdChair size={20} />
                                     {listing.furnished
@@ -168,6 +171,16 @@ const Listing = () => {
                                 </div>
                             </li>
                         </ul>
+                        {currentUser &&
+                            listing.userRef !== currentUser._id &&
+                            !contact && (
+                                <button
+                                    onClick={() => setContact(true)}
+                                    className="my-4 p-3 bg-stone-700 text-center text-white uppercase rounded-lg hover:opacity-95 text-lg">
+                                    Contact Landlord
+                                </button>
+                            )}
+                        {!contact && <Contact listing={listing} />}
                     </div>
                 </>
             )}
