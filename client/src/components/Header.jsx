@@ -1,9 +1,29 @@
 import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+    const [searchTerm, setSearchTerm] = useState("");
     const { currentUser } = useSelector((state) => state.user);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermFromURL = urlParams.get("searchTerm");
+        if (searchTermFromURL) {
+            setSearchTerm(searchTermFromURL);
+        }
+    }, []);
+
+    const submitHandler = (event) => {
+        event.preventDefault();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("searchTerm", searchTerm);
+        const searchQuery = urlParams.toString();
+        navigate(`/search?${searchQuery}`);
+    };
 
     return (
         <header className="bg-stone-200 shadow-md">
@@ -14,16 +34,22 @@ const Header = () => {
                         <span className="text-stone-700">Estate</span>
                     </h1>
                 </Link>
-                <form className="bg-stone-100 p-3 rounded-lg flex items-center/">
+                <form
+                    onSubmit={submitHandler}
+                    className="bg-stone-100 p-3 rounded-lg flex items-center/">
                     <input
                         type="text"
                         placeholder="Search..."
                         className="bg-transparent focus:outline-none  w-24 sm:w-64"
+                        value={searchTerm}
+                        onChange={(event) => setSearchTerm(event.target.value)}
                     />
-                    <FaSearch
-                        size={20}
-                        className="text-stone-600"
-                    />
+                    <button>
+                        <FaSearch
+                            size={20}
+                            className="text-stone-600"
+                        />
+                    </button>
                 </form>
                 <ul className="flex gap-4">
                     <Link to="/">
