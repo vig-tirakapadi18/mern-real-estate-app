@@ -16,6 +16,7 @@ const Search = () => {
     });
     const [loading, setLoading] = useState(false);
     const [listing, setListing] = useState([]);
+    const [showMore, setShowMore] = useState(false);
 
     const navigate = useNavigate();
 
@@ -51,11 +52,17 @@ const Search = () => {
 
         const fetchListing = async () => {
             setLoading(true);
+            setShowMore(false);
             const searchQuery = urlParams.toString();
             const response = await fetch(
                 `/api/listing/getListing?${searchQuery}`
             );
             const data = await response.json();
+            if (data.length > 3) {
+                setShowMore(true);
+            } else {
+                setShowMore(false);
+            }
             setListing(data);
             setLoading(false);
         };
@@ -106,6 +113,18 @@ const Search = () => {
 
         const searchQuery = urlParams.toString();
         navigate(`/search?${searchQuery}`);
+    };
+
+    const showMoreListingHandler = async () => {
+        const numberOfListings = listing.length;
+        const startIndex = numberOfListings;
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set("startIndex", startIndex);
+        const searchQuery = urlParams.toString();
+        const response = await fetch(`/api/listing/getListing?${searchQuery}`);
+        const data = await response.json();
+        if (data.length < 4) setShowMore(false);
+        setListing([...listing, ...data]);
     };
 
     return (
@@ -164,7 +183,7 @@ const Search = () => {
                                 type="checkbox"
                                 id="offer"
                                 className="w-5"
-                                checked={sidebarData.order}
+                                checked={sidebarData.offer}
                                 onChange={inputChangeHandler}
                             />
                             <span>Offer</span>
@@ -243,6 +262,14 @@ const Search = () => {
                                 listing={listing}
                             />
                         ))}
+
+                    {showMore && (
+                        <button
+                            onClick={showMoreListingHandler}
+                            className="text-emerald-700 hover:underline text-center w-full mb-6">
+                            Show more
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
