@@ -34,10 +34,7 @@ const Listing = () => {
             try {
                 setLoading(true);
                 const res = await fetch(
-                    `/api/listing/getListing/${params.listingId}`,
-                    {
-                        method: "GET", // DEFAULT MATHOD
-                    }
+                    `/api/listing/getListing/${params.listingId}`
                 );
                 const data = await res.json();
                 if (data.success === false) {
@@ -130,7 +127,7 @@ const Listing = () => {
                                     Rs.{" "}
                                     {+listing.regularPrice -
                                         +listing.discountPrice}{" "}
-                                    /-
+                                    OFF /-
                                 </p>
                             )}
                         </div>
@@ -180,7 +177,7 @@ const Listing = () => {
                                     Contact Landlord
                                 </button>
                             )}
-                        {!contact && <Contact listing={listing} />}
+                        {contact && <Contact listing={listing} />}
                     </div>
                 </>
             )}

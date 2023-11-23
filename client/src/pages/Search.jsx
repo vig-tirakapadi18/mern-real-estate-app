@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import PulseLoading from "../components/UI/PulseLoading";
+import ListingItem from "./ListingItem";
 
 const Search = () => {
     const [sidebarData, setSidebarData] = useState({
@@ -39,13 +41,9 @@ const Search = () => {
             setSidebarData({
                 searchTerm: searchTermFromURL || "",
                 type: typeFromURL || "all",
-                parking:
-                    parkingFromURL || parkingFromURL === "true" ? true : false,
-                furnished:
-                    furnishedFromURL || furnishedFromURL === "true"
-                        ? true
-                        : false,
-                offer: offerFromURL || offerFromURL === "true" ? true : false,
+                parking: parkingFromURL === "true" ? true : false,
+                furnished: furnishedFromURL === "true" ? true : false,
+                offer: offerFromURL === "true" ? true : false,
                 sort: sortFromURL || "created_at",
                 order: orderFromURL || "desc",
             });
@@ -57,15 +55,13 @@ const Search = () => {
             const response = await fetch(
                 `/api/listing/getListing?${searchQuery}`
             );
-            const data = response.json();
+            const data = await response.json();
             setListing(data);
             setLoading(false);
         };
 
         fetchListing();
     }, []);
-
-    console.log(sidebarData);
 
     const inputChangeHandler = (event) => {
         if (
@@ -114,7 +110,7 @@ const Search = () => {
 
     return (
         <div className="flex flex-col md:flex-row text-lg">
-            <div className="p-7 border-b-2 md:border-r-2 border-stone-400 md:min-h-screen">
+            <div className="p-7 border-b-2 md:border-r-2 border-stone-400 md:min-h-screen flex-1">
                 <form
                     onSubmit={submitHandler}
                     className="">
@@ -131,7 +127,7 @@ const Search = () => {
                             onChange={inputChangeHandler}
                         />
                     </div>
-                    <div className="flex gap-3 my-6">
+                    <div className="flex gap-3 my-6 flex-wrap">
                         <label className="font-semibold">Type:</label>
                         <div className="flex gap-1 flex-wrap">
                             <input
@@ -214,20 +210,40 @@ const Search = () => {
                             <option value={"createdAt_asc"}>Oldest</option>
                         </select>
                     </div>
-                    <button className="flex justify-center items-center gap-2 my-6 text-center bg-stone-700 p-3 w-full text-white uppercase text-lg rounded-lg hover:opacity-95">
+                    <button
+                        type="submit"
+                        className="flex justify-center items-center gap-2 my-6 text-center bg-stone-700 p-3 w-full text-white uppercase text-lg rounded-lg hover:opacity-95">
                         <FaSearch /> Search
                     </button>
                 </form>
             </div>
-            <div>
-                <h1 className="text-3xl font-semibold text-stone-800 p-3 border-b border-stone-300 mt-3">
-                    Listing results:{" "}
-                </h1>
-            </div>
-            <div>
-                {!loading && listing.length === 0 && (
-                    <p className="">No listings found!</p>
-                )}
+            <div className="md:w-[60rem] sm:flex-col">
+                <div className="flex-1">
+                    <h1 className="text-3xl font-semibold text-stone-800 p-3 border-b border-stone-300 mt-3">
+                        Listing results:{" "}
+                    </h1>
+                </div>
+                <div>
+                    {!loading && listing.length === 0 && (
+                        <p className="text-xl text-rose-700 my-[7rem]">
+                            No listings found!
+                        </p>
+                    )}
+                    {loading && (
+                        <div className="my-[7rem]">
+                            {" "}
+                            <PulseLoading width="w-40" />
+                        </div>
+                    )}
+                    {!loading &&
+                        listing &&
+                        listing.map((listing) => (
+                            <ListingItem
+                                key={listing._id}
+                                listing={listing}
+                            />
+                        ))}
+                </div>
             </div>
         </div>
     );
