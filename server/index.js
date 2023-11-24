@@ -18,7 +18,7 @@ mongoose.connect(process.env.CONN_STR)
                 console.log(err.message);
         })
 
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
 const app = express();
 
