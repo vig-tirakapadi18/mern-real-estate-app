@@ -12,9 +12,6 @@ exports.createListing = async (req, res, next) => {
 
 exports.deleteListing = async (req, res, next) => {
         const listing = await Listing.findById(req.params.id);
-        console.log(listing);
-        console.log(req.params);
-        // console.log(listing.userRef)
 
         if (!listing) {
                 return next(errorHandler(404, "Listing does not exist!"))

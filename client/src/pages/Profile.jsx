@@ -73,7 +73,6 @@ const Profile = () => {
 
         try {
             dispatch(updateUserStart());
-            console.log(currentUser);
             const res = await fetch(`/api/user/update/${currentUser._id}`, {
                 method: "POST",
                 headers: {
@@ -82,7 +81,6 @@ const Profile = () => {
                 body: JSON.stringify(formData),
             });
             const data = await res.json();
-            console.log(data);
 
             if (data.success === false) {
                 dispatch(updateUserFailure(data.message));
@@ -143,7 +141,6 @@ const Profile = () => {
                 return;
             }
 
-            console.log(data);
             setUserListings(data);
         } catch (error) {
             setShowListingError(true);
@@ -152,13 +149,11 @@ const Profile = () => {
 
     const deleteListingHandler = async (listingId) => {
         try {
-            console.log(currentUser._id);
             const res = await fetch(`/api/listing/delete/${listingId}`, {
                 method: "DELETE",
             });
 
             const data = await res.json();
-            console.log(data);
             if (data.success === false) {
                 console.log(data.message);
                 return;
@@ -171,8 +166,6 @@ const Profile = () => {
             console.log(error.message);
         }
     };
-
-    // const updateListingHandler = (listingId) => {};
 
     return (
         <Fragment>

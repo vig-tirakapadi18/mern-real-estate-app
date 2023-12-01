@@ -13,7 +13,6 @@ const SignIn = () => {
     const [formData, setFormData] = useState({});
 
     const { error, loading } = useSelector((state) => state.user);
-    console.log(error, loading);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
